@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Book;
-import com.example.demo.model.Genre;
-import com.example.demo.model.Rate;
 import com.example.demo.model.User;
-import com.example.demo.repository.GenreRepository;
 import com.example.demo.security.CurrentUser;
 import com.example.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -55,19 +55,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users/genres").hasAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/users/admin/users").hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.POST,"books/genre/*/author/*").hasAnyAuthority("ADMIN,USER,EDITOR")
-                .antMatchers(HttpMethod.POST,"ratings/*/rate").hasAnyAuthority("ADMIN,USER,EDITOR")
-//                .antMatchers(HttpMethod.POST,"/users").hasAuthority("ADMIN")
-//                 .antMatchers(HttpMethod.PUT, "/users").hasAnyAuthority("USER", "ADMIN")
-//               .antMatchers(HttpMethod.DELETE, "/users/*").hasAnyAuthority( "ADMIN")
-//               .antMatchers(HttpMethod.DELETE, "/book/*").hasAnyAuthority( "ADMIN")
+                .antMatchers(HttpMethod.POST, "books/genre/*/author/*").hasAnyAuthority("ADMIN,USER,EDITOR")
+                .antMatchers(HttpMethod.POST, "ratings/*/rate").hasAnyAuthority("ADMIN,USER,EDITOR")
+                .antMatchers(HttpMethod.POST, "/users/add-favorite-list").hasAnyAuthority("ADMIN,USER,EDITOR")
+                .antMatchers(HttpMethod.POST, "/authors").hasAnyAuthority("ADMIN,USER,EDITOR")
                 .anyRequest().permitAll();
 
-        // Custom JWT based security filter
         http
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
-        // disable page caching
         http.headers().cacheControl();
     }
 

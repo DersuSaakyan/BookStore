@@ -31,12 +31,21 @@ public class RateService {
         return rateRepository.findAll();
     }
 
-    public void addRatingBooks(int id, User user, Rate rating) {
+    public void addRatingBooks(int id, User user, Rate rating) throws Exception {
+        if (rating.getRate() > 5) {
+            throw new Exception("Rating should be no more than 5");
+        }
 
         Book book = bookRepository.findOneById(id);
-        rating.setBook(book);
-        rating.setUser(user);
-        rateRepository.save(rating);
+        Rate r = rateRepository.getOneByBookAndUser(book, user);
+        if (r != null) {
+            r.setRate(rating.getRate());
+            rateRepository.save(r);
+        } else {
+            rating.setBook(book);
+            rating.setUser(user);
+            rateRepository.save(rating);
+        }
     }
 
     public Book getBookByMaxGenre(int id) {
@@ -45,12 +54,15 @@ public class RateService {
         double max = 0.0;
         Book resultBook = null;
         for (Book book : set) {
-            double d=rateRepository.findMaxRatingByBookId(book.getId());
-            if(max<d){
-                max=d;
-                resultBook=book;
+            double d = rateRepository.findMaxRatingByBookId(book.getId());
+            if (max < d) {
+                max = d;
+                resultBook = book;
             }
         }
         return resultBook;
+    }
+    public double getBookAverageRating(int bookId) {
+        return rateRepository.getAverageBookRating(bookId);
     }
 }

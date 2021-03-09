@@ -25,7 +25,7 @@ public class RateController {
 
     @PostMapping("/{id}/rate")
     public ResponseEntity<String> addRateBook(@PathVariable("id") int id, @RequestBody Rate rating
-            , @AuthenticationPrincipal UserDetails userDetails) {
+            , @AuthenticationPrincipal UserDetails userDetails) throws Exception {
         User loginUser = ((CurrentUser) userDetails).getUser();
         rateService.addRatingBooks(id, loginUser, rating);
         return ResponseEntity.ok("Rate is success");
@@ -39,5 +39,10 @@ public class RateController {
     @GetMapping("/genre")
     public Book getBookByMaxGenre(@RequestParam(name = "id") int id) {
         return rateService.getBookByMaxGenre(id);
+    }
+
+    @GetMapping("/get-avg-book-rating")
+    public double getAvgBookRating(@RequestParam("id") int id) {
+        return rateService.getBookAverageRating(id);
     }
 }

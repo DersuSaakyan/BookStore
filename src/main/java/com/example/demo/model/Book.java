@@ -7,11 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Data
@@ -34,7 +31,7 @@ public class Book {
     @Column
     private int count;
     @Column
-    private Date year;
+    private String year;
 
     @JsonIgnore
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)

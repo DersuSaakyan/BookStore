@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Book;
 import com.example.demo.model.User;
 
 import com.example.demo.model.UserType;
+import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.CurrentUser;
 import com.example.demo.security.JwtTokenUtil;
@@ -17,18 +19,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
+    private final BookRepository bookRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, BookRepository bookRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.bookRepository = bookRepository;
     }
 
     @Override
@@ -74,7 +79,7 @@ public class UserService implements UserDetailsService {
 
     public void saveAdmin(User user) throws Exception {
         if (user.getType() == null) {
-                throw new Exception("Please check type ADMIN or EDITOR");
+            throw new Exception("Please check type ADMIN or EDITOR");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -82,5 +87,15 @@ public class UserService implements UserDetailsService {
 
     public List<User> users() {
         return userRepository.findAll();
+    }
+
+    public void addBookMyFavoriteList(User user, int bookId) {
+        Book book = bookRepository.findOneById(bookId);
+        user.getMyFavoriteBook().add(book);
+        userRepository.save(user);
+    }
+
+    public Set<Book> getMyFavoriteBook(User user) {
+        return user.getMyFavoriteBook();
     }
 }
