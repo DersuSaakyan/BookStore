@@ -6,6 +6,7 @@ import com.example.demo.model.User;
 import com.example.demo.security.CurrentUser;
 import com.example.demo.service.RateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class RateController {
             , @AuthenticationPrincipal UserDetails userDetails) throws Exception {
         User loginUser = ((CurrentUser) userDetails).getUser();
         rateService.addRatingBooks(id, loginUser, rating);
-        return ResponseEntity.ok("Rate is success");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Rate is success");
     }
 
     @GetMapping()
