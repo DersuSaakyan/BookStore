@@ -30,7 +30,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/title}")
+    @GetMapping("/title")
     public List<Book> getBooksByTitle(@RequestParam(name = "title") String title) {
         return bookService.getBookByTitle(title);
     }

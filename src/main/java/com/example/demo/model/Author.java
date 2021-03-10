@@ -28,7 +28,7 @@ public class Author {
     @Column
     private String country;
     @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+    private String dateOfBirth;
     @Column(name = "date_of_died")
     private String dateOfDied;
 
